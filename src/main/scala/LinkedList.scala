@@ -33,7 +33,6 @@ sealed trait LinkedList[+A] {
 
   def toList: List[A] = {
     //    case Empty => List()
-    //    case Node(h, Empty) => List(h)
     //    case Node(h, tl) => h :: tl.toList
     foldRight(List[A]())((b, acc) => b :: acc)
   }
