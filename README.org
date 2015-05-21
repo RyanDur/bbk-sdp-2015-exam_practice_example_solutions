@@ -1,4 +1,5 @@
 * BBK-SDP-2015-EXAM_PRACTICE
+* Example Solutions
 -----
 
 The intent of the exercise is to help you to think in a functional manner.
