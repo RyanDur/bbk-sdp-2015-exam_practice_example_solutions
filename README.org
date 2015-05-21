@@ -1,0 +1,31 @@
+* BBK-SDP-2015-EXAM_PRACTICE
+-----
+
+The intent of the exercise is to help you to think in a functional manner.
+To that end, you will have to complete the LinkedList API outlined in the
+src directory. There are companion tests in the test directory that make
+sure that the output is the same as the List API. All but three functions
+in the API have the same signature as the List API. The other three are
+there for helpful and/or instructional purposes. I recommend that you
+execute the completion of the API from top to bottom. You can do it in any
+order you like, but I believe you will find it easier complete it in this
+order. I wish you all the best of luck with your exams.
+
+-----
+** Rules
+Since this is to help you think in a functional way there are some rules
+to follow.
+
+*** No for loops, while loops and do whiles. The only way to iterate over a list is to use recursion.
+*** No Side effects for any method other than foreach (which you will manually test)
+*** No mutating state. everything should be immutable from creation of an object
+*** There is no reason to add any additional classes or objects or traits. Put your implementation anywhere you find "???"
+*** DO NOT CHANGE THE METHOD SIGNATURES.
+-----
+
+** Tests
+***** To get the tests to work, I have marked in the test file with "TODO"s.
+***** Under the TODOs are lines that start with an "ignore", swap out the word ignore with "describe" to open a block of tests.
+
+I will be posting sample solutions two days before the Exam. I wish you all
+the best of luck.
