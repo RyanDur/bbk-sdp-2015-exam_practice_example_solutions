@@ -161,6 +161,42 @@ sealed trait LinkedList[+A] {
       } else (Empty, this)
   }
 
+  def take(n: Int): LinkedList[A] = this match {
+    case Empty => Empty
+    case Node(h, tl) =>
+      if (n > 0) h :: tl.take(n - 1) else Empty
+  }
+
+  @tailrec final def drop(n: Int): LinkedList[A] = this match {
+    case Empty => Empty
+    case Node(h, tl) =>
+      if (n > 1) tl.drop(n - 1) else tl
+  }
+
+  def last: A = this match {
+    case Empty => throw new NoSuchElementException
+    case Node(h, Empty) => h
+    case Node(_, tl) => drop(tl.size).head
+  }
+
+  def +:[B >: A](elem: B): LinkedList[B] = elem :: this
+
+  def :::[B >: A](prefix: LinkedList[B]): LinkedList[B] = prefix ++ this
+
+  def sum[B >: A](implicit num: Numeric[B]): B = foldLeft(num.zero)(num.plus)
+
+  def max[B >: A](implicit cmp: Ordering[B]): A = this match {
+    case Empty => throw new UnsupportedOperationException("empty.max")
+    case Node(h, Empty) => h
+    case Node(h, tl) => cmp.max(h, tl.max[B]).asInstanceOf[A]
+  }
+
+  def min[B >: A](implicit cmp: Ordering[B]): A = this match {
+    case Empty => throw new UnsupportedOperationException("empty.max")
+    case Node(h, Empty) => h
+    case Node(h, tl) => cmp.min(h, tl.max[B]).asInstanceOf[A]
+  }
+
   def mergeSort[B >: A](implicit ord: Ordering[B]): LinkedList[B] = {
     def merge(left: LinkedList[B], right: LinkedList[B]): LinkedList[B] = (left, right) match {
       case (Node(h1, tl1), Node(h2, tl2)) =>

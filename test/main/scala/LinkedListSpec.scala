@@ -1,5 +1,7 @@
 package main.scala
 
+import java.util.NoSuchElementException
+
 import org.scalatest.{ShouldMatchers, path}
 
 class LinkedListSpec extends path.FunSpec with ShouldMatchers {
@@ -657,6 +659,171 @@ class LinkedListSpec extends path.FunSpec with ShouldMatchers {
           l._1.toList should equal(l2._1)
           l._2.toList should equal(l2._2)
         }
+      }
+    }
+
+    describe("take - Selects first n elements.") {
+      describe("When Empty") {
+        list = LinkedList()
+        it("should return empty")(list.take(4) should equal(Empty))
+        it("should be equivalent to List")(list.take(4).toList should equal(List().take(4)))
+      }
+      describe("with one element") {
+        list = LinkedList(4)
+        it("should return one element list")(list.take(5) should equal(Node(4, Empty)))
+        it("should be equivalent to List") (list.take(5).toList should equal(List(4).take(5)))
+      }
+      describe("with multiple elements") {
+        list = LinkedList(1, 2, 3, 6, 7)
+        val a = list.take(3)
+        it("should return the number of elements")(list.take(3) should equal(Node(1, Node(2, Node(3, Empty)))))
+        it("should be equivalent to List") (list.take(3).toList should equal(List(1, 2, 3, 6, 7).take(3)))
+      }
+    }
+
+    describe("drop - Selects all elements except first n ones.") {
+      describe("When Empty") {
+        list = LinkedList()
+        it("should return empty")(list.drop(4) should equal(Empty))
+        it("should be equivalent to List")(list.drop(4).toList should equal(List().drop(4)))
+      }
+      describe("with one element") {
+        list = LinkedList(4)
+        it("should return one element list")(list.drop(5) should equal(Empty))
+        it("should be equivalent to List") (list.drop(5).toList should equal(List(4).drop(5)))
+      }
+      describe("with multiple elements") {
+        list = LinkedList(1, 2, 3, 6, 7)
+        val a = list.take(3)
+        it("should return the number of elements")(list.drop(3) should equal(Node(6, Node(7, Empty))))
+        it("should be equivalent to List") (list.drop(3).toList should equal(List(1, 2, 3, 6, 7).drop(3)))
+      }
+    }
+
+    describe("last - Selects the last element.") {
+      describe("When Empty") {
+        list = LinkedList()
+        it("should return throw an exception")(intercept[NoSuchElementException](list.last))
+        it("should be equivalent to List")(intercept[NoSuchElementException](List().last))
+      }
+      describe("with one element") {
+        list = LinkedList(4)
+        it("should return the head")(list.last should equal(list.head))
+        it("should be equivalent to List") {
+          list.last should equal(List(4).head)
+          list.last should equal(List(4).last)
+        }
+      }
+      describe("with multiple elements") {
+        list = LinkedList(1, 2, 3, 6, 7)
+        it("should return the head")(list.last should equal(7))
+        it("should be equivalent to List")(list.last should equal(List(1, 2, 3, 6, 7).last))
+      }
+    }
+
+    describe("+: - A copy of the list with an element prepended.") {
+      describe("When Empty") {
+        list = LinkedList()
+        it("should prepend one element")(list.+:(3) should equal(Node(3, Empty)))
+        it("should be equivalent to List")(list.+:(3).toList should equal(List().::(3)))
+      }
+      describe("with one element") {
+        list = LinkedList(4)
+        it("should prepend one element")(list.+:(3) should equal(Node(3, Node(4, Empty))))
+        it("should be equivalent to List")(list.+:(3).toList should equal(List(4).+:(3)))
+      }
+      describe("with multiple elements") {
+        list = LinkedList(4, 5, 6, 7)
+        it("should prepend one element")(list.+:(3) should equal(Node(3, Node(4, Node(5, Node(6, Node(7, Empty)))))))
+        it("should be equivalent to List")((3 +: 1 +: 2 +: Empty).toList should equal(List(3, 1, 2)))
+      }
+      it("should be right associative") {
+        (3 +: 1 +: 2 +: Empty) should equal(Node(3, Node(1, Node(2, Empty))))
+      }
+    }
+
+    describe("::: - Adds the elements of a given list in front of this list.") {
+      val listToBAdded = LinkedList(1, 2, 3)
+      describe("When Empty") {
+        list = LinkedList()
+        it("should take the form of the added list")((listToBAdded ::: list) should equal(listToBAdded))
+        it("should be empty if both lists are empty")((LinkedList() ::: list) should equal(Empty))
+        it("should be equivalent to List") {
+          (listToBAdded ::: list).toList should equal(List(1, 2, 3) ::: List())
+          (LinkedList() ::: list).toList should equal(List() ::: List())
+        }
+      }
+      describe("with one element") {
+        list = LinkedList(3)
+        it("should take the form of the original list if added list is empty") {
+          (LinkedList() ::: list) should equal(list)
+        }
+        it("should add the two lists together")((listToBAdded ::: list) should equal(LinkedList(1, 2, 3, 3)))
+        it("should be equivalent to List") {
+          (listToBAdded ::: list).toList should equal(List(1, 2, 3) ::: List(3))
+          (LinkedList() ::: list).toList should equal(List() ::: List(3))
+        }
+      }
+      describe("with multiple elements") {
+        list = LinkedList(3, 9, 5, 7)
+        it("should add the two lists together")((listToBAdded ::: list) should equal(LinkedList(1, 2, 3, 3, 9, 5, 7)))
+        it("should be equivalent to List") {
+          (listToBAdded ::: list).toList should equal(List(1, 2, 3) ::: List(3, 9, 5, 7))
+        }
+      }
+    }
+
+    describe("sum") {
+      describe("When Empty") {
+        list = LinkedList[Int]()
+        it("should be zero") (list.sum should equal(0))
+        it("should be equivalent to List")(list.sum should equal(List[Int]().sum))
+      }
+      describe("with one element") {
+        list = LinkedList(4)
+        it("should be 4")(list.sum should equal(4))
+        it("should be equivalent to List")(list.sum should equal(List(4).sum))
+      }
+      describe("with multiple elements") {
+        list = LinkedList(1, 2, 3, 6, 7)
+        it("should be 4")(list.sum should equal(19))
+        it("should be equivalent to List")(list.sum should equal(List(1, 2, 3, 6, 7).sum))
+      }
+    }
+
+    describe("max") {
+      describe("When Empty") {
+        list = LinkedList[Int]()
+        it("should throw an exception")(intercept[UnsupportedOperationException](list.max))
+        it("should be equivalent to List")(intercept[UnsupportedOperationException](List().max))
+      }
+      describe("with one element") {
+        list = LinkedList(4)
+        it("should return the head")(list.max should equal(list.head))
+        it("should be equivalent to List")(list.max should equal(List(4).max))
+      }
+      describe("with multiple elements") {
+        list = LinkedList(1, 2, 8, 6, 7)
+        it("should return the max value")(list.max should equal(8))
+        it("should be equivalent to List")(list.max should equal(List(1, 2, 8, 6, 7).max))
+      }
+    }
+
+    describe("min") {
+      describe("When Empty") {
+        list = LinkedList[Int]()
+        it("should throw an exception")(intercept[UnsupportedOperationException](list.min))
+        it("should be equivalent to List")(intercept[UnsupportedOperationException](List().min))
+      }
+      describe("with one element") {
+        list = LinkedList(4)
+        it("should return the head")(list.min should equal(list.head))
+        it("should be equivalent to List")(list.min should equal(List(4).min))
+      }
+      describe("with multiple elements") {
+        list = LinkedList(1, 2, 8, 6, 7)
+        it("should return the max value")(list.min should equal(1))
+        it("should be equivalent to List")(list.min should equal(List(1, 2, 8, 6, 7).min))
       }
     }
 
