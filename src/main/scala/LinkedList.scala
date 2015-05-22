@@ -161,14 +161,14 @@ sealed trait LinkedList[+A] {
       } else (Empty, this)
   }
 
-  def mergeSort(): LinkedList[Int] = {
-    def merge(left: LinkedList[Int], right: LinkedList[Int]): LinkedList[Int] = (left, right) match {
+  def mergeSort[B >: A](implicit ord: Ordering[B]): LinkedList[B] = {
+    def merge(left: LinkedList[B], right: LinkedList[B]): LinkedList[B] = (left, right) match {
       case (Node(h1, tl1), Node(h2, tl2)) =>
-        if (h1 <= h2) h1 :: merge(tl1, right)
+        if (ord.compare(h2, h1) == 1) h1 :: merge(tl1, right)
         else h2 :: merge(left, tl2)
       case _ => if (left.isEmpty) right else left
     }
-    def sort(input: LinkedList[Int], length: Int): LinkedList[Int] = input match {
+    def sort(input: LinkedList[B], length: Int): LinkedList[B] = input match {
       case Empty | Node(_, Empty) => input
       case _ =>
         val middle = length / 2
@@ -176,7 +176,7 @@ sealed trait LinkedList[+A] {
         merge(sort(left, middle), sort(right, middle + length % 2))
     }
 
-    sort(this.asInstanceOf[LinkedList[Int]], this.size)
+    sort(this, this.size)
   }
 }
 

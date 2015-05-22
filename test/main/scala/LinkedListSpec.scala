@@ -663,16 +663,16 @@ class LinkedListSpec extends path.FunSpec with ShouldMatchers {
     describe("mergeSort") {
       describe("When Empty") {
         list = LinkedList()
-        it("should return an empty")(list.mergeSort() should equal(Empty))
+        it("should return an empty")(list.mergeSort should equal(Empty))
       }
       describe("with one element") {
         list = LinkedList(4)
-        it("should return an empty")(list.mergeSort() should equal(Node(4, Empty)))
+        it("should return an empty")(list.mergeSort should equal(Node(4, Empty)))
       }
       describe("with multiple elements") {
         list = LinkedList(5, 6, 2, 4, 3, 1)
         it("should return an empty") {
-          list.mergeSort() should equal(Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Empty)))))))
+          list.mergeSort should equal(Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Empty)))))))
         }
       }
     }
