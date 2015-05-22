@@ -173,10 +173,10 @@ sealed trait LinkedList[+A] {
       if (n > 1) tl.drop(n - 1) else tl
   }
 
-  def last: A = this match {
+  @tailrec final def last: A = this match {
     case Empty => throw new NoSuchElementException
     case Node(h, Empty) => h
-    case Node(_, tl) => drop(tl.size).head
+    case Node(_, tl) => tl.last
   }
 
   def +:[B >: A](elem: B): LinkedList[B] = elem :: this
