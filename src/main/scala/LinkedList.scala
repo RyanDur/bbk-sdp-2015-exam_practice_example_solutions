@@ -200,8 +200,8 @@ sealed trait LinkedList[+A] {
   def mergeSort[B >: A](implicit ord: Ordering[B]): LinkedList[B] = {
     def merge(left: LinkedList[B], right: LinkedList[B]): LinkedList[B] = (left, right) match {
       case (Node(h1, tl1), Node(h2, tl2)) =>
-        if (ord.compare(h2, h1) == 1) h1 :: merge(tl1, right)
-        else h2 :: merge(left, tl2)
+        if (ord.compare(h1, h2) == 1) h2 :: merge(left, tl2)
+        else  h1 :: merge(tl1, right)
       case _ => if (left.isEmpty) right else left
     }
     def sort(input: LinkedList[B], length: Int): LinkedList[B] = input match {
