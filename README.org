@@ -21,7 +21,7 @@ to follow.
 *** No Side effects for any method other than foreach (which you will manually test)
 *** No mutating state. everything should be immutable from creation of an object
 *** There is no reason to add any additional classes or objects or traits. Put your implementation anywhere you find "???"
-*** DO NOT CHANGE THE METHOD SIGNATURES.
+*** Most of the method signatures are correct. Some will need to be changed a little to work like the API. (HINT: these are towards the end. Not all of the methods are defined in List, look at the ancestors)
 -----
 
 ** Tests
