@@ -49,17 +49,17 @@ sealed trait LinkedList[+A] {
     case Node(h, tl) => if (f(h)) tl.dropWhile(f) else this
   }
 
-  def ++[B >: A](that: LinkedList[B]): LinkedList[B] = {
-    @tailrec def helper(acc: LinkedList[B], other: LinkedList[B]): LinkedList[B] = other match {
-      case Empty => acc
-      case head Node tail => helper(head :: acc, tail)
+  def ++[B >: A](that: LinkedList[B]): LinkedList[B] =
+//        {
+//      @tailrec def helper(acc: LinkedList[B], other: LinkedList[B]): LinkedList[B] = other match {
+//        case Empty => acc
+//        case head Node tail => helper(head :: acc, tail)
+//      }
+//      helper(that, this.reverse())
+    this match {
+      case Empty => that
+      case Node(h, tl) => h :: tl ++ that
     }
-    helper(that, this.reverse())
-    //    (this, that) match {
-    //      case (Empty, Empty) => Empty
-    //      case (Empty, Node(_, _)) | (Node(_, _), Empty) => if (this.isEmpty) that else this
-    //      case (Node(h, tl), Node(h2, tl2)) => h :: tl ++ that
-  }
 
   @tailrec final def foldLeft[B](acc: B)(f: (B, A) => B): B = this match {
     case Empty => acc
@@ -144,6 +144,8 @@ sealed trait LinkedList[+A] {
       else tl.collect(pf)
   }
 
+
+
   def groupBy[K](f: (A) => K): Map[K, LinkedList[A]] = this match {
     case Empty => Map()
     case Node(h, tl) =>
@@ -201,7 +203,7 @@ sealed trait LinkedList[+A] {
     def merge(left: LinkedList[B], right: LinkedList[B]): LinkedList[B] = (left, right) match {
       case (Node(h1, tl1), Node(h2, tl2)) =>
         if (ord.compare(h1, h2) == 1) h2 :: merge(left, tl2)
-        else  h1 :: merge(tl1, right)
+        else h1 :: merge(tl1, right)
       case _ => if (left.isEmpty) right else left
     }
     def sort(input: LinkedList[B], length: Int): LinkedList[B] = input match {
