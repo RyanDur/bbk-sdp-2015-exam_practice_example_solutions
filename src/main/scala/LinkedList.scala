@@ -50,12 +50,12 @@ sealed trait LinkedList[+A] {
   }
 
   def ++[B >: A](that: LinkedList[B]): LinkedList[B] =
-//        {
-//      @tailrec def helper(acc: LinkedList[B], other: LinkedList[B]): LinkedList[B] = other match {
-//        case Empty => acc
-//        case head Node tail => helper(head :: acc, tail)
-//      }
-//      helper(that, this.reverse())
+  //        {
+  //      @tailrec def helper(acc: LinkedList[B], other: LinkedList[B]): LinkedList[B] = other match {
+  //        case Empty => acc
+  //        case head Node tail => helper(head :: acc, tail)
+  //      }
+  //      helper(that, this.reverse())
     this match {
       case Empty => that
       case Node(h, tl) => h :: tl ++ that
@@ -78,7 +78,7 @@ sealed trait LinkedList[+A] {
   def reduce[B >: A](f: (B, B) => B): B = this match {
     case Empty => throw new UnsupportedOperationException("empty.reduceLeft")
     case Node(h, Empty) => h
-    case Node(h, tl) => tl.foldRight(h)((item, acc) => f(acc, item).asInstanceOf[A])
+    case Node(h, tl) => tl.foldLeft(h)((acc, item) => f(acc, item).asInstanceOf[A])
     //    def helper[B >: A](list: LinkedList[B], f: (B, B) => B): B = list match {
     //      case Empty => throw new UnsupportedOperationException("empty.reduceLeft")
     //      case Node(h, Empty) => h
@@ -145,7 +145,6 @@ sealed trait LinkedList[+A] {
   }
 
 
-
   def groupBy[K](f: (A) => K): Map[K, LinkedList[A]] = this match {
     case Empty => Map()
     case Node(h, tl) =>
@@ -201,20 +200,22 @@ sealed trait LinkedList[+A] {
 
   def mergeSort[B >: A](implicit ord: Ordering[B]): LinkedList[B] = {
     def merge(left: LinkedList[B], right: LinkedList[B]): LinkedList[B] = (left, right) match {
+      case (Empty, _) | (_, Empty) => if (left.isEmpty) right else left
       case (Node(h1, tl1), Node(h2, tl2)) =>
-        if (ord.compare(h1, h2) == 1) h2 :: merge(left, tl2)
-        else h1 :: merge(tl1, right)
-      case _ => if (left.isEmpty) right else left
+        if (ord.compare(h1, h2) == 1)
+          h2 :: merge(left, tl2)
+        else
+          h1 :: merge(tl1, right)
     }
-    def sort(input: LinkedList[B], length: Int): LinkedList[B] = input match {
+    def sort(input: LinkedList[B]): LinkedList[B] = input match {
       case Empty | Node(_, Empty) => input
       case _ =>
-        val middle = length / 2
+        val middle = input.size / 2
         val (left, right) = input splitAt middle
-        merge(sort(left, middle), sort(right, middle + length % 2))
+        merge(sort(left), sort(right))
     }
 
-    sort(this, this.size)
+    sort(this)
   }
 }
 

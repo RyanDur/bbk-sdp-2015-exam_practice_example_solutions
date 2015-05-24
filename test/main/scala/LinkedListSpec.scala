@@ -671,13 +671,13 @@ class LinkedListSpec extends path.FunSpec with ShouldMatchers {
       describe("with one element") {
         list = LinkedList(4)
         it("should return one element list")(list.take(5) should equal(Node(4, Empty)))
-        it("should be equivalent to List") (list.take(5).toList should equal(List(4).take(5)))
+        it("should be equivalent to List")(list.take(5).toList should equal(List(4).take(5)))
       }
       describe("with multiple elements") {
         list = LinkedList(1, 2, 3, 6, 7)
         val a = list.take(3)
         it("should return the number of elements")(list.take(3) should equal(Node(1, Node(2, Node(3, Empty)))))
-        it("should be equivalent to List") (list.take(3).toList should equal(List(1, 2, 3, 6, 7).take(3)))
+        it("should be equivalent to List")(list.take(3).toList should equal(List(1, 2, 3, 6, 7).take(3)))
       }
     }
 
@@ -690,13 +690,13 @@ class LinkedListSpec extends path.FunSpec with ShouldMatchers {
       describe("with one element") {
         list = LinkedList(4)
         it("should return one element list")(list.drop(5) should equal(Empty))
-        it("should be equivalent to List") (list.drop(5).toList should equal(List(4).drop(5)))
+        it("should be equivalent to List")(list.drop(5).toList should equal(List(4).drop(5)))
       }
       describe("with multiple elements") {
         list = LinkedList(1, 2, 3, 6, 7)
         val a = list.take(3)
         it("should return the number of elements")(list.drop(3) should equal(Node(6, Node(7, Empty))))
-        it("should be equivalent to List") (list.drop(3).toList should equal(List(1, 2, 3, 6, 7).drop(3)))
+        it("should be equivalent to List")(list.drop(3).toList should equal(List(1, 2, 3, 6, 7).drop(3)))
       }
     }
 
@@ -776,7 +776,7 @@ class LinkedListSpec extends path.FunSpec with ShouldMatchers {
     describe("sum") {
       describe("When Empty") {
         list = LinkedList[Int]()
-        it("should be zero") (list.sum should equal(0))
+        it("should be zero")(list.sum should equal(0))
         it("should be equivalent to List")(list.sum should equal(List[Int]().sum))
       }
       describe("with one element") {
@@ -834,12 +834,14 @@ class LinkedListSpec extends path.FunSpec with ShouldMatchers {
       }
       describe("with one element") {
         list = LinkedList(4)
-        it("should return an empty")(list.mergeSort should equal(Node(4, Empty)))
+        it("should return the list")(list.mergeSort should equal(Node(4, Empty)))
       }
       describe("with multiple elements") {
-        list = LinkedList(5, 6, 2, 4, 3, 1)
-        it("should return an empty") {
-          list.mergeSort should equal(Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Empty)))))))
+        val listOdd = LinkedList(5, 6, 2, 4, 3)
+        val listEven = LinkedList(5, 6, 2, 4, 3, 1)
+        it("should sort the list") {
+          listOdd.mergeSort should equal(Node(2, Node(3, Node(4, Node(5, Node(6, Empty))))))
+          listEven.mergeSort should equal(Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Empty)))))))
         }
       }
     }
