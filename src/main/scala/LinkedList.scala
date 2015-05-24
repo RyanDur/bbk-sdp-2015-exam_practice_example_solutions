@@ -210,8 +210,7 @@ sealed trait LinkedList[+A] {
     def sort(input: LinkedList[B]): LinkedList[B] = input match {
       case Empty | Node(_, Empty) => input
       case _ =>
-        val middle = input.size / 2
-        val (left, right) = input splitAt middle
+        val (left, right) = input splitAt input.size / 2
         merge(sort(left), sort(right))
     }
 
