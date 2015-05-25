@@ -1,11 +1,11 @@
 package main.scala
 
 final case class Leaf(r: BST, value: Int, l: BST) extends BST {
-  override def size: Int = 1 + r.size + l.size
+  val size: Int = 1 + r.size + l.size
 }
 
 case object EmptyLeaf extends BST {
-  override def size: Int = 0
+  val size: Int = 0
 }
 
 sealed trait BST {
