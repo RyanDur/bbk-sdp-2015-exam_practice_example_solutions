@@ -11,10 +11,10 @@ case object EmptyLeaf extends BST {
 sealed trait BST {
   def size: Int
 
-  def bsAdd(inValue: Int): BST = this match {
+  def add(inValue: Int): BST = this match {
     case EmptyLeaf => Leaf(EmptyLeaf, inValue, EmptyLeaf)
-    case Leaf(l, v, r) if v > inValue => Leaf(l.bsAdd(inValue), v, r)
-    case Leaf(l, v, r) => Leaf(l, v, r.bsAdd(inValue))
+    case Leaf(l, v, r) if v > inValue => Leaf(l.add(inValue), v, r)
+    case Leaf(l, v, r) => Leaf(l, v, r.add(inValue))
   }
 
   def contains(inValue: Int): Boolean = this match {
@@ -59,11 +59,11 @@ object BST {
 
 object Runner extends App {
   var tree = BST()
-  tree = tree.bsAdd(4)
-  tree = tree.bsAdd(9)
-  tree = tree.bsAdd(3)
-  tree = tree.bsAdd(1)
-  tree = tree.bsAdd(10)
+  tree = tree.add(4)
+  tree = tree.add(9)
+  tree = tree.add(3)
+  tree = tree.add(1)
+  tree = tree.add(10)
 
   println(tree)
   println()
